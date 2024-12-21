@@ -21,6 +21,12 @@ app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`);
 })
 
+app.get("/", (req, res) => {
+    res.send("Deployed on Vercel")
+})
+
 const authRouter = require("./routes/auth")
 
 app.use("/auth", authRouter)
+
+module.exports = app;

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native'
 import axios from 'axios'
 import Loader from '../../components/Loader/Loader'
+import { APP_HOST } from '@env';
 
 const initialState = { username: "", email: "", password: "" }
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -10,6 +11,9 @@ export default function SignUpScreen() {
 
     const [state, setState] = useState(initialState)
     const [loading, setLoading] = useState(false)
+
+    console.log(APP_HOST);
+    
 
     const handleChange = (name, val) => setState(s => ({ ...s, [name]: val }))
 
@@ -34,11 +38,12 @@ export default function SignUpScreen() {
             return;
         }
 
-        await axios.post(`${process.env.APP_HOST}/auth/register`, { username, email, password })
+        await axios.post(`${APP_HOST}auth/register`, { username, email, password })
             .then((res) => {
                 const { status } = res
                 if (status === 201) {
                     // Alert.alert("User registered!", res.data.message)
+                    console.log(res.data)
                     setState(initialState)
                     setLoading(false)
                 }

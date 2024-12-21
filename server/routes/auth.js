@@ -20,7 +20,7 @@ router.post("/register", async (req, res) => {
             status: 'active'
         })
 
-        res.status(201).json({ message: "User created succesfully!" })
+        res.status(201).json({ message: "User created succesfully!", user })
     }
     catch (err) {
         console.error(err)

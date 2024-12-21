@@ -1,11 +1,16 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useAuthContext } from '../../contexts/AuthContext'
 
 export default function ProfileScreen({ navigation }) {
+
+    const { user } = useAuthContext()
+
     return (
         <>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={styles.pageHeight}>
+                    <Text style={{ color: '#666' }}>User: {user.username}</Text>
                     <Text style={{ color: '#666' }}>You don't have joined us yet.</Text>
                     <View>
                         <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Login')}>

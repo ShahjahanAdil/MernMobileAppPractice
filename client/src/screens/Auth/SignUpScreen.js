@@ -12,9 +12,6 @@ export default function SignUpScreen() {
     const [state, setState] = useState(initialState)
     const [loading, setLoading] = useState(false)
 
-    console.log(APP_HOST);
-    
-
     const handleChange = (name, val) => setState(s => ({ ...s, [name]: val }))
 
     const handleSubmit = async () => {
@@ -42,8 +39,7 @@ export default function SignUpScreen() {
             .then((res) => {
                 const { status } = res
                 if (status === 201) {
-                    // Alert.alert("User registered!", res.data.message)
-                    console.log(res.data)
+                    Alert.alert("User registered!", res.data.message)
                     setState(initialState)
                     setLoading(false)
                 }

@@ -12,6 +12,11 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import ContactScreen from '../screens/Frontend/ContactScreen';
 import AboutScreen from '../screens/Frontend/AboutScreen';
+import { useAuthContext } from '../contexts/AuthContext';
+import Loader from '../components/Loader/Loader';
+import CreateTodo from '../screens/Frontend/CreateTodo';
+import AllTodo from '../screens/Frontend/AllTodos';
+import TodoDetails from '../screens/Frontend/TodoDetails';
 
 
 // Navigators
@@ -32,6 +37,9 @@ const StackNavigator = () => {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Contact" component={ContactScreen} />
             <Stack.Screen name="About" component={AboutScreen} />
+            <Stack.Screen name="CreateTodo" component={CreateTodo} options={{ headerTitle: 'Create Todo' }} />
+            <Stack.Screen name="AllTodos" component={AllTodo} options={{ headerTitle: 'Manage Todos' }} />
+            <Stack.Screen name="TodoDetails" component={TodoDetails} options={{ headerTitle: 'Todo Details' }} />
         </Stack.Navigator>
     );
 }
@@ -74,9 +82,17 @@ const TabNavigator = () => {
 }
 
 export default function AppNavigator() {
+
+    const { loading } = useAuthContext()
+
     return (
         <NavigationContainer>
-            <StackNavigator />
+            {
+                loading ?
+                    <Loader />
+                    :
+                    <StackNavigator />
+            }
         </NavigationContainer>
     );
 }

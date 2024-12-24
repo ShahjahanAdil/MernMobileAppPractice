@@ -55,4 +55,21 @@ router.post("/login", async (req, res) => {
     }
 })
 
+router.get("/user", verfiyToken, async (req, res) => {
+    try {
+        const userID = req.userID
+        const user = await authModel.findOne({ userID })
+
+        if (!user) {
+            return res.status(401).json({ message: "Invalid email or password" })
+        }
+
+        res.status(200).json({ user })
+    }
+    catch (error) {
+        console.error(error);
+        res.status(401).json({ error })
+    }
+})
+
 module.exports = router

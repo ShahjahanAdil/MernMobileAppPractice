@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'reac
 import axios from 'axios'
 import Loader from '../../components/Loader/Loader'
 import { APP_HOST } from '@env';
+import { useNavigation } from '@react-navigation/native';
 
 const initialState = { username: "", email: "", password: "" }
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -11,6 +12,7 @@ export default function SignUpScreen() {
 
     const [state, setState] = useState(initialState)
     const [loading, setLoading] = useState(false)
+    const navigation = useNavigation()
 
     const handleChange = (name, val) => setState(s => ({ ...s, [name]: val }))
 
@@ -71,6 +73,13 @@ export default function SignUpScreen() {
                 <TouchableOpacity style={styles.authButton} onPress={handleSubmit}>
                     <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12 }}>SIGNUP NOW</Text>
                 </TouchableOpacity>
+
+                <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                    <Text style={{ color: '#666' }}>Already have an account?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                        <Text style={{ color: '#0c82bd', marginLeft: 5 }}>Login Now</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     )

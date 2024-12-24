@@ -39,7 +39,7 @@ export default function LoginScreen() {
                     await AsyncStorage.setItem("jwt", data.token);
                     dispatch({ type: "SET_LOGGED_IN", payload: { user: data.user } })
                     setLoading(false)
-                    navigation.navigate('Home')
+                    navigation.navigate('Tabs')
                 }
             })
             .catch(err => {
@@ -76,6 +76,13 @@ export default function LoginScreen() {
                 <TouchableOpacity style={styles.authButton} onPress={handleSubmit}>
                     <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12 }}>LOGIN NOW</Text>
                 </TouchableOpacity>
+
+                <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                    <Text style={{ color: '#666' }}>Don't have an account?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                        <Text style={{ color: '#0c82bd', marginLeft: 5 }}>Register Now</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     )

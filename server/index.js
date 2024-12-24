@@ -26,7 +26,9 @@ app.get("/", (req, res) => {
 })
 
 const authRouter = require("./routes/auth")
+const todosRouter = require("./routes/todos")
 
 app.use("/auth", authRouter)
+app.use("/todos", todosRouter)
 
 module.exports = app;

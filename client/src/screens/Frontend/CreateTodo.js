@@ -1,8 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import EntypoIcon from 'react-native-vector-icons/dist/Entypo';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { APP_HOST } from '@env';
+import axios from 'axios';
+
+const initialState = { title: '', description: '' }
 
 export default function CreateTodo() {
+
+    const { user } = useAuthContext()
+    const userID = user.userID
+
+    const [state, setState] = useState(initialState)
+    const [loading, setLoading] = useState(false)
+
+    const handleOnChangeText = (name, val) => setState(s => ({ ...s, [name]: val }))
+
+    const handleCreateTodo = () => {
+        setLoading(true)
+        const { title, description } = state
+
+        if (!title || !description) return setLoading(false)
+
+        axios.post(`${APP_HOST}todos/create`, { userID, title, description, status: 'pending' })
+            .then(res => {
+                const { status } = res
+                if (status === 201) {
+                    setState(initialState)
+                    setLoading(false)
+                }
+            })
+            .catch(err => {
+                console.error("Todo create error frontend", err)
+                setLoading(false)
+            })
+    }
+
     return (
         <View style={styles.pageHeight}>
             <View style={styles.createTodoContainer}>
@@ -10,16 +44,21 @@ export default function CreateTodo() {
                 <View style={{ gap: 10 }}>
                     <View>
                         <Text style={{ color: '#666', marginBottom: 5 }}>Title:</Text>
-                        <TextInput style={styles.createTodoInput} placeholder="Enter title" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" />
+                        <TextInput style={styles.createTodoInput} placeholder="Enter title" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" value={state.title} onChangeText={(val) => handleOnChangeText('title', val)} />
                     </View>
                     <View>
                         <Text style={{ color: '#666', marginBottom: 5 }}>Description:</Text>
-                        <TextInput style={styles.createTodoInput} placeholder="Enter description" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" />
+                        <TextInput style={styles.createTodoInput} placeholder="Enter description" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" value={state.description} onChangeText={(val) => handleOnChangeText('description', val)} />
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={styles.createBtn}>
-                        <Text style={{ color: '#fff' }}>Create <EntypoIcon name='plus' size={16} color='#fff' /></Text>
+                    <TouchableOpacity style={styles.createBtn} onPress={handleCreateTodo} disabled={loading}>
+                        {
+                            !loading ?
+                                <Text style={{ color: '#fff' }}>Create <EntypoIcon name='plus' size={16} color='#fff' /></Text>
+                                :
+                                <Text style={{ color: '#fff' }}>Adding...</Text>
+                        }
                     </TouchableOpacity>
                 </View>
             </View>

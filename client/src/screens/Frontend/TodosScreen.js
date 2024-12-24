@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import EntypoIcon from 'react-native-vector-icons/dist/Entypo';
 import FeatherIcon from 'react-native-vector-icons/dist/Feather';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -19,10 +19,16 @@ export default function TodosScreen({ navigation }) {
 
     return (
         <View style={styles.pageHeight}>
+            <View>
+                <Image source={require('../../assets/images/todosPage.jpg')} style={{ width: 300, height: 300 }} />
+            </View>
             {
                 !isAuthenticated &&
                 <View style={styles.loginError}>
-                    <Text style={{ color: '#666', textAlign: 'center' }}>Please login to your account before continuing!</Text>
+                    <Text style={{ color: '#666' }}>Please login to your account before continuing!</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                        <Text style={{ color: '#0c82bd', textDecorationLine: 'underline' }}>Login or SignUp</Text>
+                    </TouchableOpacity>
                 </View>
             }
 
@@ -46,9 +52,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
         padding: 10,
-        gap: 15
     },
     button: {
         backgroundColor: '#0C82BD',
@@ -60,11 +64,13 @@ const styles = StyleSheet.create({
     },
     loginError: {
         width: '100%',
-        padding: 5,
+        paddingVertical: 5,
+        paddingHorizontal: 12,
         borderWidth: 1,
         borderColor: '#ff9c9c',
         borderRadius: 8,
-        backgroundColor: '#ffdfdf'
+        backgroundColor: '#ffdfdf',
+        marginBottom: 10,
     },
     todosView: {
         width: '100%',

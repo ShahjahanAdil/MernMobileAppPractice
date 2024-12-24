@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import FeatherIcon from 'react-native-vector-icons/dist/Feather';
 
 export default function AllTodo({ navigation }) {
+
+    // const [todos, setTodos] = useState([])
 
     const todos = [
         {

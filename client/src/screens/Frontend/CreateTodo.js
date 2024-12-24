@@ -1,33 +1,29 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import EntypoIcon from 'react-native-vector-icons/dist/Entypo';
 
 export default function CreateTodo() {
     return (
-        <>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <View style={styles.pageHeight}>
-                    <View style={styles.createTodoContainer}>
-                        <Text style={{ color: '#0c82bd', fontSize: 20, fontWeight: 'bold', marginBottom: 12, textAlign: 'center' }}>Create Todo</Text>
-                        <View style={{ gap: 10 }}>
-                            <View>
-                                <Text style={{ color: '#666', marginBottom: 5 }}>Title:</Text>
-                                <TextInput style={styles.createTodoInput} placeholder="Enter title" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" />
-                            </View>
-                            <View>
-                                <Text style={{ color: '#666', marginBottom: 5 }}>Description:</Text>
-                                <TextInput style={styles.createTodoInput} placeholder="Enter description" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" />
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.createBtn}>
-                                <Text style={{ color: '#fff' }}>Create <EntypoIcon name='plus' size={16} color='#fff' /></Text>
-                            </TouchableOpacity>
-                        </View>
+        <View style={styles.pageHeight}>
+            <View style={styles.createTodoContainer}>
+                <Text style={{ color: '#0c82bd', fontSize: 20, fontWeight: 'bold', marginBottom: 12, textAlign: 'center' }}>Create Todo</Text>
+                <View style={{ gap: 10 }}>
+                    <View>
+                        <Text style={{ color: '#666', marginBottom: 5 }}>Title:</Text>
+                        <TextInput style={styles.createTodoInput} placeholder="Enter title" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" />
+                    </View>
+                    <View>
+                        <Text style={{ color: '#666', marginBottom: 5 }}>Description:</Text>
+                        <TextInput style={styles.createTodoInput} placeholder="Enter description" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" />
                     </View>
                 </View>
-            </ScrollView>
-        </>
+                <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity style={styles.createBtn}>
+                        <Text style={{ color: '#fff' }}>Create <EntypoIcon name='plus' size={16} color='#fff' /></Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
     )
 }
 

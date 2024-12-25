@@ -2,22 +2,45 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { SelectList } from 'react-native-dropdown-select-list';
 import FeatherIcon from 'react-native-vector-icons/dist/Feather';
+import { APP_HOST } from '@env';
+import axios from 'axios';
 
 export default function TodoDetails({ route }) {
 
     const { todo } = route.params
 
     const [state, setState] = useState({})
-    const [selected, setSelected] = useState("")
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         setState(todo)
     }, [])
 
     const data = [
-        { key: '1', value: 'Pending' },
-        { key: '2', value: 'Complete' }
+        { key: 'pending', value: 'Pending' },
+        { key: 'complete', value: 'Complete' }
     ]
+
+    const handleOnChangeText = (name, val) => {
+        setState(s => ({ ...s, [name]: val }))
+    }
+
+    const handleUpdate = (todoID) => {
+        setLoading(true)
+        const updatedTodo = state
+
+        axios.patch(`${APP_HOST}todos/update/${todoID}`, updatedTodo)
+            .then(res => {
+                const { status } = res
+                if (status === 202) {
+                    setLoading(false)
+                }
+            })
+            .catch(err => {
+                console.error("Todo fetching error frontend", err)
+                setLoading(false)
+            })
+    }
 
     return (
         <View style={styles.pageHeight}>
@@ -26,28 +49,34 @@ export default function TodoDetails({ route }) {
                 <View style={{ gap: 10 }}>
                     <View>
                         <Text style={{ color: '#666', marginBottom: 5 }}>Title:</Text>
-                        <TextInput style={styles.updateTodoInput} placeholder="Enter title" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" />
+                        <TextInput style={styles.updateTodoInput} value={state.title} placeholder="Enter title" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" onChangeText={(val) => handleOnChangeText('title', val)} />
                     </View>
                     <View>
                         <Text style={{ color: '#666', marginBottom: 5 }}>Description:</Text>
-                        <TextInput style={styles.updateTodoInput} placeholder="Enter description" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" />
+                        <TextInput style={styles.updateTodoInput} value={state.description} placeholder="Enter description" placeholderTextColor="#e7e7e7" cursorColor="#0C82BD" onChangeText={(val) => handleOnChangeText('description', val)} />
                     </View>
                     <View>
                         <Text style={{ color: '#666', marginBottom: 5 }}>Status:</Text>
                         <SelectList
-                            setSelected={(val) => setSelected(val)}
+                            setSelected={(val) => handleOnChangeText('status', val)}
                             data={data}
-                            save={selected}
+                            save="key"
+                            defaultOption={data.find(item => item.key === state.status) || data[0]}
                             boxStyles={{ paddingVertical: 8, paddingHorizontal: 10, borderRadius: 8, borderColor: '#e7e7e7' }}
-                            inputStyles={{ color: '#888' }}
+                            inputStyles={{ color: '#666' }}
                             dropdownStyles={{ borderColor: '#e7e7e7' }}
                             dropdownTextStyles={{ color: '#666' }}
                         />
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={styles.updateBtn}>
-                        <Text style={{ color: '#fff' }}>Update <FeatherIcon name='edit-2' size={16} color='#fff' /></Text>
+                    <TouchableOpacity style={styles.updateBtn} disabled={loading} onPress={() => handleUpdate(todo.todoID)}>
+                        {
+                            !loading ?
+                                <Text style={{ color: '#fff' }}>Update <FeatherIcon name='edit-2' size={16} color='#fff' /></Text>
+                                :
+                                <Text style={{ color: '#fff' }}>Updating...</Text>
+                        }
                     </TouchableOpacity>
                 </View>
             </View>
@@ -82,7 +111,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 18,
         backgroundColor: '#0c82bd',
-        marginTop: 15,
+        marginTop: 18,
         borderRadius: 8,
         elevation: 4
     }

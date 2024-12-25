@@ -73,6 +73,9 @@ export default function AllTodo({ navigation }) {
                                             </View>
                                         </TouchableOpacity>
                                     </View>
+                                    <View style={styles.todoStatus}>
+                                        <Text style={{ color: todo.status === 'complete' ? '#08ff00' : '#e1f309' }}>{todo.status}</Text>
+                                    </View>
                                 </View>
                             )
                         })
@@ -90,16 +93,19 @@ const styles = StyleSheet.create({
         padding: 10
     },
     todoBox: {
+        position: 'relative',
         width: '100%',
         backgroundColor: '#fff',
-        elevation: 5,
+        marginTop: 20,
         marginBottom: 15,
-        borderRadius: 8
+        borderTopLeftRadius: 8,
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
     },
     todoBoxTop: {
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
-        borderBottomColor: '#d1d1d1',
+        borderBottomColor: '#eaeaea',
         borderBottomWidth: 1,
         padding: 10
     },
@@ -115,5 +121,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#3d3d3d',
         borderBottomLeftRadius: 8,
         borderBottomRightRadius: 8
+    },
+    todoStatus: {
+        position: 'absolute',
+        bottom: '92%',
+        right: 0,
+        backgroundColor: '#fff',
+        paddingVertical: 5,
+        paddingHorizontal: 15,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
     }
 })

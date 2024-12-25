@@ -37,6 +37,21 @@ router.post("/create", async (req, res) => {
     }
 })
 
+router.patch("/update/:todoID", async (req, res) => {
+    try {
+        const updatedTodo = req.body
+        const { todoID } = req.params
+
+        await todosModel.findOneAndUpdate({ todoID }, updatedTodo, { new: true })
+
+        res.status(202).json({ message: 'Todo updated!' })
+    }
+    catch (err) {
+        console.error(err)
+        res.status(400).json({ message: err.message })
+    }
+})
+
 router.delete("/delete/:todoID", async (req, res) => {
     try {
         const { todoID } = req.params

@@ -37,4 +37,18 @@ router.post("/create", async (req, res) => {
     }
 })
 
+router.delete("/delete/:todoID", async (req, res) => {
+    try {
+        const { todoID } = req.params
+
+        await todosModel.findOneAndDelete({ todoID })
+
+        res.status(203).json({ message: 'Todo deleted!' })
+    }
+    catch (err) {
+        console.error(err)
+        res.status(400).json({ message: err.message })
+    }
+})
+
 module.exports = router

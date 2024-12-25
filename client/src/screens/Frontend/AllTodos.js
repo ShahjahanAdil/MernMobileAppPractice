@@ -4,10 +4,13 @@ import FeatherIcon from 'react-native-vector-icons/dist/Feather';
 import { APP_HOST } from '@env';
 import axios from 'axios';
 import Loader from '../../components/Loader/Loader';
+import ConfirmDelete from '../../components/ConfirmDelete/ConfirmDelete';
 
 export default function AllTodo({ navigation }) {
 
     const [todos, setTodos] = useState([])
+    const [showDelModal, setShowDelModal] = useState(false)
+    const [delTodoId, setDelTodoId] = useState('')
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -30,16 +33,23 @@ export default function AllTodo({ navigation }) {
         fetchTodos()
     }, [])
 
+    const handleDeleteConfirmation = (todoID) => {
+        setShowDelModal(true)
+        setDelTodoId(todoID)
+    }
+
     if (loading) {
         return <Loader />
     }
 
     return (
         <>
+            {showDelModal && <ConfirmDelete todos={todos} setTodos={setTodos} setShowDelModal={setShowDelModal} delTodoId={delTodoId} />}
+
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={styles.pageHeight}>
                     <View>
-                        <Text style={{ color: '#666', fontSize: 16, fontWeight: 600, marginTop: 5, marginBottom: 12 }}>Manage all your todos here:</Text>
+                        <Text style={{ color: '#666', fontSize: 16, fontWeight: '600', marginTop: 5, marginBottom: 12 }}>Manage all your todos here:</Text>
                     </View>
                     {
                         todos.map(todo => {
@@ -52,16 +62,16 @@ export default function AllTodo({ navigation }) {
                                         <Text style={{ color: '#888' }}>{todo.description}</Text>
                                     </View>
                                     <View style={styles.todoBoxBottom}>
-                                        <View style={{ flex: 1, alignItems: 'center', borderRightWidth: 1, borderColor: '#666' }}>
-                                            <TouchableOpacity onPress={() => navigation.navigate('TodoDetails', { todo })}>
+                                        <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('TodoDetails', { todo })}>
+                                            <View style={{ flex: 1, alignItems: 'center', borderRightWidth: 1, borderColor: '#666' }}>
                                                 <FeatherIcon name='edit-2' size={16} color='#0c82bd' />
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{ flex: 1, alignItems: 'center' }}>
-                                            <TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ flex: 1 }} onPress={() => handleDeleteConfirmation(todo.todoID)}>
+                                            <View style={{ flex: 1, alignItems: 'center' }}>
                                                 <FeatherIcon name='trash' size={16} color='#ff3131' />
-                                            </TouchableOpacity>
-                                        </View>
+                                            </View>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                             )

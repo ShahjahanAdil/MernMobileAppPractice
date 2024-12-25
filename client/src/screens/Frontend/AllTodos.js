@@ -1,31 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import FeatherIcon from 'react-native-vector-icons/dist/Feather';
+import { APP_HOST } from '@env';
+import axios from 'axios';
+import Loader from '../../components/Loader/Loader';
 
 export default function AllTodo({ navigation }) {
 
-    // const [todos, setTodos] = useState([])
+    const [todos, setTodos] = useState([])
+    const [loading, setLoading] = useState(true)
 
-    const todos = [
-        {
-            todoId: '1324rsd',
-            title: 'todo 1',
-            description: 'make a video',
-            status: 'pending'
-        },
-        {
-            todoId: 'ewkrhgi',
-            title: 'todo 223',
-            description: 'make a short',
-            status: 'complete'
-        },
-        {
-            todoId: 'h783nwos',
-            title: 'todo 1284',
-            description: 'make a content',
-            status: 'pending'
-        },
-    ]
+    useEffect(() => {
+        const fetchTodos = () => {
+            setLoading(true)
+
+            axios.get(`${APP_HOST}todos/all`)
+                .then(res => {
+                    const { status, data } = res
+                    if (status === 200) {
+                        setTodos(data.todos)
+                        setLoading(false)
+                    }
+                })
+                .catch(err => {
+                    console.error("Todo fetching error frontend", err)
+                    setLoading(false)
+                })
+        }
+        fetchTodos()
+    }, [])
+
+    if (loading) {
+        return <Loader />
+    }
 
     return (
         <>

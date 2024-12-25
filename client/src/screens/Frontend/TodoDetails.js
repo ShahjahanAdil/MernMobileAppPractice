@@ -4,6 +4,7 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import FeatherIcon from 'react-native-vector-icons/dist/Feather';
 import { APP_HOST } from '@env';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TodoDetails({ route }) {
 
@@ -11,6 +12,7 @@ export default function TodoDetails({ route }) {
 
     const [state, setState] = useState({})
     const [loading, setLoading] = useState(false)
+    const navigation = useNavigation()
 
     useEffect(() => {
         setState(todo)
@@ -21,9 +23,7 @@ export default function TodoDetails({ route }) {
         { key: 'complete', value: 'Complete' }
     ]
 
-    const handleOnChangeText = (name, val) => {
-        setState(s => ({ ...s, [name]: val }))
-    }
+    const handleOnChangeText = (name, val) => setState(s => ({ ...s, [name]: val }))
 
     const handleUpdate = (todoID) => {
         setLoading(true)
@@ -34,6 +34,7 @@ export default function TodoDetails({ route }) {
                 const { status } = res
                 if (status === 202) {
                     setLoading(false)
+                    navigation.navigate('AllTodos')
                 }
             })
             .catch(err => {

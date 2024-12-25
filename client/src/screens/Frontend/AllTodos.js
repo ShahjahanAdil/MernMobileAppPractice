@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     todoStatus: {
         position: 'absolute',
-        bottom: '92%',
+        bottom: '95%',
         right: 0,
         backgroundColor: '#fff',
         paddingVertical: 5,

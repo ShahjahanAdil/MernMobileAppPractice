@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
-import { APP_HOST } from '@env';
+import { APP_HOST_LOCAL } from '@env';
 import axios from 'axios';
 
 export default function ConfirmDelete({ todos, setTodos, setShowDelModal, delTodoId }) {
@@ -11,7 +11,7 @@ export default function ConfirmDelete({ todos, setTodos, setShowDelModal, delTod
     const handleDelete = (delTodoId) => {
         setLoading(true)
 
-        axios.get(`${APP_HOST}todos/delete/${delTodoId}`)
+        axios.delete(`${APP_HOST_LOCAL}todos/delete/${delTodoId}`)
             .then(res => {
                 const { status } = res
                 if (status === 203) {

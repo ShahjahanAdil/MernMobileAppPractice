@@ -2,12 +2,14 @@ const express = require("express")
 const router = express.Router()
 
 const todosModel = require('../models/todos')
+const verfiyToken = require("../middlewares/auth")
 
 const generateRandomID = () => { return Math.random().toString(36).slice(5) }
 
-router.get("/all", async (req, res) => {
+router.get("/all", verfiyToken, async (req, res) => {
     try {
-        const todos = await todosModel.find()
+        const { userID } = req.userID
+        const todos = await todosModel.find({ userID })
 
         res.status(200).json({ message: "Fetched Todos!", todos })
     }

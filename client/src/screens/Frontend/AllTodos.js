@@ -5,6 +5,7 @@ import { APP_HOST } from '@env';
 import axios from 'axios';
 import Loader from '../../components/Loader/Loader';
 import ConfirmDelete from '../../components/ConfirmDelete/ConfirmDelete';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AllTodo({ navigation }) {
 
@@ -14,10 +15,12 @@ export default function AllTodo({ navigation }) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const fetchTodos = () => {
+        const fetchTodos = async () => {
             setLoading(true)
+            const token = await AsyncStorage.getItem('jwt')
+            const config = { headers: { Authorization: `Bearer ${token}` } }
 
-            axios.get(`${APP_HOST}todos/all`)
+            axios.get(`${APP_HOST}todos/all`, config)
                 .then(res => {
                     const { status, data } = res
                     if (status === 200) {

@@ -8,7 +8,7 @@ const generateRandomID = () => { return Math.random().toString(36).slice(5) }
 
 router.get("/all", verfiyToken, async (req, res) => {
     try {
-        const { userID } = req.userID
+        const userID = req.userID
         const todos = await todosModel.find({ userID })
 
         res.status(200).json({ message: "Fetched Todos!", todos })

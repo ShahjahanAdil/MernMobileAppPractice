@@ -6,7 +6,8 @@ const todosSchema = new Schema({
     todoID: { type: String, required: true, unique: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    status: { type: String }
+    status: { type: String },
+    imageURL: { type: String }
 }, { timestamps: true })
 
 const todosModel = mongoose.model("todos", todosSchema)

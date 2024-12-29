@@ -21,14 +21,15 @@ router.get("/all", verfiyToken, async (req, res) => {
 
 router.post("/create", async (req, res) => {
     try {
-        const { userID, title, description, status } = req.body
+        const { userID, title, description, status, imageURL } = req.body
 
         await todosModel.create({
             userID,
             todoID: generateRandomID(),
             title,
             description,
-            status
+            status,
+            imageURL
         })
 
         res.status(201).json({ message: "Todo created!" })
